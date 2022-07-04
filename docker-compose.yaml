@@ -24,6 +24,7 @@ services:
     volumes:
       - data1:/data1
       - data2:/data2
+    restart: unless-stopped
 
   nginx:
     image: nginx:stable-alpine
@@ -34,7 +35,6 @@ services:
     environment:
       - NGINX_HOST_API=${FQDN_API}
       - NGINX_HOST_CONSOLE=${FQDN_CONSOLE}
-      - NGINX_HOST_WILDCARD=${FQDN_WILDCARD}
     ports:
       - "443:443"
       - "9000:9000"
@@ -50,7 +50,7 @@ services:
     volumes:
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
-    command: certonly --standalone --email ${CERTBOT_EMAIL} --agree-tos --no-eff-email -d ${FQDN_WILDCARD}
+    command: certonly --standalone --email ${CERTBOT_EMAIL} --agree-tos --no-eff-email -d ${FQDN_API} -d ${FQDN_CONSOLE}
 
 ## By default this config uses default local driver,
 ## For custom volumes replace with volume driver configuration.
