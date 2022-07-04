@@ -13,7 +13,7 @@ services:
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minio}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASS:-minio123}
-      MINIO_BROWSER_REDIRECT_URL: https://${FQDN}
+      MINIO_BROWSER_REDIRECT_URL: https://${FQDN_CONSOLE}
 
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
@@ -32,7 +32,9 @@ services:
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
     environment:
-      - NGINX_HOST=${FQDN}
+      - NGINX_HOST_API=${FQDN_API}
+      - NGINX_HOST_CONSOLE=${FQDN_CONSOLE}
+      - NGINX_HOST_WILDCARD=${FQDN_WILDCARD}
     ports:
       - "443:443"
       - "9000:9000"
@@ -48,7 +50,7 @@ services:
     volumes:
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
-    command: certonly --standalone --email ${CERTBOT_EMAIL} --agree-tos --no-eff-email -d ${FQDN}
+    command: certonly --standalone --email ${CERTBOT_EMAIL} --agree-tos --no-eff-email -d ${FQDN_WILDCARD}
 
 ## By default this config uses default local driver,
 ## For custom volumes replace with volume driver configuration.
