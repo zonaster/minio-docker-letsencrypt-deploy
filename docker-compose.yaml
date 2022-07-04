@@ -4,7 +4,7 @@ version: '3.7'
 # using nginx reverse proxy, you can access
 # it through default port 9000.
 services:
-  minio1:
+  minio:
     image: quay.io/minio/minio:RELEASE.2022-06-30T20-58-09Z
     command: server http://minio/data --console-address ":9001"
     expose:
