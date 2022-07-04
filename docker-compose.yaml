@@ -50,7 +50,11 @@ services:
     volumes:
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
-    command: certonly --expand --standalone --email ${CERTBOT_EMAIL} --agree-tos --no-eff-email -d ${FQDN_API} -d ${FQDN_CONSOLE}
+    command: > 
+      bash -c "
+        certonly --expand --standalone --email ${CERTBOT_EMAIL} --agree-tos --no-eff-email -d ${FQDN_CONSOLE}
+        && certonly --expand --standalone --email ${CERTBOT_EMAIL} --agree-tos --no-eff-email -d -d ${FQDN_API}
+      "
 
 ## By default this config uses default local driver,
 ## For custom volumes replace with volume driver configuration.
