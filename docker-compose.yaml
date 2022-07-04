@@ -6,7 +6,7 @@ version: '3.7'
 services:
   minio:
     image: quay.io/minio/minio:RELEASE.2022-06-30T20-58-09Z
-    command: server http://minio /data --console-address ":9001"
+    command: server /data{1...2} --console-address ":9001"
     expose:
       - "9000"
       - "9001"
@@ -22,7 +22,8 @@ services:
       retries: 3
     hostname: minio
     volumes:
-      - data:/data
+      - data1:/data1
+      - data2:/data2
 
   nginx:
     image: nginx:stable-alpine
@@ -52,6 +53,7 @@ services:
 ## By default this config uses default local driver,
 ## For custom volumes replace with volume driver configuration.
 volumes:
-  data:
+  data1:
+  data2:
   certbot-etc:
   certbot-var:
